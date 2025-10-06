@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { UserContext } from "@/lib/context/Usercontext";
+import { getuserinfofromtoken } from "@/lib/services/auth.service";
+import { LogOut } from "lucide-react";
+import { useContext, useEffect, useState } from "react";
 import { Label } from "../ui/label";
 import {
   Select,
@@ -14,6 +17,35 @@ import NavItems from "./NavItems";
 
 export default function Header() {
   const [price, setPrice] = useState<string>("USD");
+  const { user, setuser } = useContext(UserContext);
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    setuser({ email: "", name: "" });
+  };
+
+  const handlegetinfo = async (token: string) => {
+    const response = await getuserinfofromtoken({ token: token });
+    if (typeof response === "string") {
+      alert(response);
+    } else {
+      if (response.accesstoken) {
+        localStorage.setItem("token", response.accesstoken);
+      }
+      const newuser = {
+        name: response.name,
+        email: response.email,
+      };
+      setuser(newuser);
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      handlegetinfo(token);
+    }
+  }, []);
 
   return (
     <div className="flex flex-col md:flex-row items-center justify-between mx-5 py-6 md:py-10 gap-4 md:gap-0">
@@ -41,7 +73,15 @@ export default function Header() {
             </SelectGroup>
           </SelectContent>
         </Select>
-        <LoginDialog></LoginDialog>
+        {user.email != "" && user.name != "" ? (
+          <>
+            {user.name} <LogOut onClick={logout}></LogOut>
+          </>
+        ) : (
+          <>
+            <LoginDialog></LoginDialog>
+          </>
+        )}
       </div>
     </div>
   );

@@ -1,20 +1,17 @@
-import type { Destination } from "@/lib/interfaces/Destination";
+import type { Destinationresponse } from "@/lib/interfaces/backendresponse/Destinationresponse";
 
 interface DestinationCardProps {
-  destination: Destination;
+  destination: Destinationresponse;
 }
 
 export default function Destinationcard({ destination }: DestinationCardProps) {
   return (
-    <div
-      key={destination.id}
-      className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer h-80"
-    >
+    <div className="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer h-80">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
-          src={destination.image}
-          alt={destination.name}
+          src={destination.has_img.url}
+          alt={destination.title}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
         {/* Overlay */}
@@ -26,23 +23,27 @@ export default function Destinationcard({ destination }: DestinationCardProps) {
         {/* Tours Badge - Top Right */}
         <div className="self-end">
           <span className="bg-blue-400 text-white px-3 py-1 rounded-full text-sm font-medium">
-            {destination.tours} tours
+            {destination.has_tour.length} tours
           </span>
         </div>
 
         {/* Destination Name */}
         <div className="self-start">
-          <h3 className="text-white text-2xl font-bold">{destination.name}</h3>
+          <h3 className="text-white text-2xl font-bold">{destination.title}</h3>
         </div>
       </div>
 
       {/* Hover Overlay with Description */}
-      <div className="absolute z-10 inset-0 bg-blue-500 bg-opacity-90 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center p-6">
-        <div className="text-center text-white">
-          <h3 className="text-2xl font-bold mb-3">{destination.name}</h3>
+      <div className="absolute z-10 inset-0 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+        <img
+          src={destination.has_img.url}
+          alt={destination.title}
+          className="w-full h-full object-cover scale-110 transition-transform duration-700"
+        />
+        <div className="absolute text-center text-white">
+          <h3 className="text-2xl font-bold mb-3">{destination.title}</h3>
           <p className="text-blue-100 text-sm leading-relaxed">
-            Discover amazing places and unique experiences in {destination.name}
-            . Book your next adventure with exclusive deals and expert guides.
+            {destination.description}
           </p>
           <div className="mt-4">
             <span className="bg-blue-400 bg-opacity-20 text-white px-4 py-2 rounded-full text-sm font-medium">

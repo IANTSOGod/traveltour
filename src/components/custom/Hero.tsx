@@ -21,7 +21,7 @@ export default function Hero() {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
           <div className="space-y-6 lg:space-y-8 lg:pt-16">
             <div className="inline-block">
-              <span className="bg-green-100 text-green-600 px-4 py-2 rounded-full text-sm font-medium">
+              <span className="border-2 border-green-400 bg-white text-green-600 px-4 py-2 rounded-full text-sm font-medium">
                 Book With Us!
               </span>
             </div>

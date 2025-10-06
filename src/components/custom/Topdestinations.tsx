@@ -1,53 +1,72 @@
+import type { Destinationresponse } from "@/lib/interfaces/backendresponse/Destinationresponse";
+import { getdestinationlist } from "@/lib/services/destination.service";
 import { ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Destinationcard from "./Destinationcard";
 
 export default function TopDestinations() {
   const navigate = useNavigate();
-  const destinations = [
-    {
-      id: 1,
-      name: "Western Europe",
-      tours: 3,
-      image:
-        "https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80",
-    },
-    {
-      id: 2,
-      name: "South Africa",
-      tours: 2,
-      image:
-        "https://images.unsplash.com/photo-1484318571209-661cf29a69ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80",
-    },
-    {
-      id: 3,
-      name: "Scandinavia",
-      tours: 2,
-      image:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80",
-    },
-    {
-      id: 4,
-      name: "Egypt",
-      tours: 3,
-      image:
-        "https://images.unsplash.com/photo-1539650116574-75c0c6d73a0e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80",
-    },
-    {
-      id: 5,
-      name: "Asia",
-      tours: 5,
-      image:
-        "https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80",
-    },
-    {
-      id: 6,
-      name: "America",
-      tours: 4,
-      image:
-        "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80",
-    },
-  ];
+
+  const [destinations, setdestinations] = useState<Destinationresponse[]>();
+
+  // const destinations = [
+  //   {
+  //     id: 1,
+  //     name: "Western Europe",
+  //     tours: 3,
+  //     image:
+  //       "https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "South Africa",
+  //     tours: 2,
+  //     image:
+  //       "https://images.unsplash.com/photo-1484318571209-661cf29a69ea?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Scandinavia",
+  //     tours: 2,
+  //     image:
+  //       "https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Egypt",
+  //     tours: 3,
+  //     image:
+  //       "https://images.unsplash.com/photo-1539650116574-75c0c6d73a0e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80",
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "Asia",
+  //     tours: 5,
+  //     image:
+  //       "https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80",
+  //   },
+  //   {
+  //     id: 6,
+  //     name: "America",
+  //     tours: 4,
+  //     image:
+  //       "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80",
+  //   },
+  // ];
+
+  const getalldestinations = async () => {
+    const response = await getdestinationlist();
+    if (typeof response === "string") {
+      alert(response);
+    } else {
+      setdestinations(response);
+    }
+  };
+
+  useEffect(() => {
+    getalldestinations();
+  });
 
   return (
     <section className="py-16 px-4 md:px-8 lg:px-16 bg-white">
@@ -79,8 +98,11 @@ export default function TopDestinations() {
 
         {/* Destinations Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {destinations.map((destination,index) => (
-            <Destinationcard destination={destination} key={index}></Destinationcard>
+          {destinations?.map((destination, index) => (
+            <Destinationcard
+              destination={destination}
+              key={index}
+            ></Destinationcard>
           ))}
         </div>
       </div>

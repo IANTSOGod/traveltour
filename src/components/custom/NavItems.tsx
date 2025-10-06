@@ -1,7 +1,8 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function NavItems() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const itemlist = [
     { title: "Home", link: "/" },
@@ -25,6 +26,9 @@ export default function NavItems() {
             location.pathname == item.link ? "text-black" : "text-gray-400"
           }`}
           key={index}
+          onClick={() => {
+            navigate(item.link);
+          }}
         >
           {item.title}
         </p>
